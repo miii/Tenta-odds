@@ -1,2 +1,4 @@
 # React skeleton using Flux
-React application skeleton using the Flux architecture
+Simple react web application skeleton using the Flux architecture.
+
+<img src="https://keyholesoftware.com/wp-content/uploads/React.js-Flux-3.png" alt="" width="460px">

@@ -9,7 +9,8 @@ class LIUScraper implements ScraperInterface {
 
   public function __construct($courseCode) {
     $this->courseCode = strtoupper($courseCode);
-    $this->_fetch();
+    // Fetch data from source
+    $this->_fetchData();
   }
 
   public function getCourseName() {
@@ -25,32 +26,37 @@ class LIUScraper implements ScraperInterface {
   }
 
   public function getCourseExams() {
+    // Do not run if exams was not found when scraping (course does not exists)
     if (empty($this->exams))
       return array();
 
-    $mainExamType = null;
+    // Stores exams
+    $examType = null;
+    // Find only exams (no tests etc)
     foreach($this->exams as $type => $list) {
       if (strpos($type, 'tentamen') !== false) {
-        $mainExamType = $type;
+        $examType = $type;
         break;
       }
       echo $type;
     }
 
-    if (!$mainExamType)
+    // If no exam was found, return nothing
+    if (!$examType)
       return array();
 
-    return $this->exams[$mainExamType];
+    // Otherwise, return found exams
+    return $this->exams[$examType];
   }
 
   public function getMainCourseExams() {
 
+    // Store main exams
+    $mainExams = array();
     $exams = $this->getCourseExams();
+    // Do not run if exams was not found when scraping (course does not exists)
     if (empty($exams))
       return array();
-
-    $mainExams = array();
-    $examsPerYear = 3;
 
     $totalParticipants = 0;
     $totalExams = 0;
@@ -60,12 +66,15 @@ class LIUScraper implements ScraperInterface {
       $totalExams++;
     }
 
+    // Get mean participants
     $meanParticipants = $totalParticipants / $totalExams;
 
     foreach($exams as $exam)
+      // Use mean participants as a threeshold when searching for main exams
       if ($exam['participants'] > $meanParticipants)
         $mainExams[] = $exam;
 
+    // return found main exams
     return $mainExams;
   }
 
@@ -75,7 +84,7 @@ class LIUScraper implements ScraperInterface {
       $this->valid = true;
   }
 
-  private function _fetch() {
+  private function _fetchData() {
     // Fetch HTML content from LIU
     $content = file_get_contents("http://www4.student.liu.se/tentaresult/?kurskod={$this->courseCode}&search=S%F6k");
     $content = utf8_encode(str_replace("\n", '', $content));
@@ -108,11 +117,13 @@ class LIUScraper implements ScraperInterface {
       foreach($grades as $grade)
         $eventData['grades'][$grade[1]] = (int) $grade[2];
 
+      // Add missing grades
       $gradesList = array('U', 3, 4, 5);
       foreach($gradesList as $j => $grade)
         if (!isset($eventData['grades'][$grade]))
-          $eventData['grades'][$grade] = 0;
+          $eventData['grades'][$grade] = 0; // Set participants to 0
 
+      // Get participants of a single event
       $eventData['participants'] = array_sum($eventData['grades']);
 
       // Save data to instance

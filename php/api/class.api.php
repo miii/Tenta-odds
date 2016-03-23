@@ -6,13 +6,16 @@ class API {
   private $found = false;
 
   public function __construct($scraper) {
+    // Scraper not implemented correctly, kill script
     if (!$scraper instanceof ScraperInterface)
-      die('ScraperInterface not implemented in scraper');
+      die('Dev: ScraperInterface not implemented in scraper');
 
+    // Return if no course exams was found
     if (empty($scraper->getCourseExams()))
       return;
 
-    $found = true;
+    $found = true; // If course exams was found
+
     $this->result['name'] = $scraper->getCourseName();
     $this->result['hp'] = $scraper->getCourseHp();
     $this->result['code'] = $scraper->getCourseCode();

@@ -14,7 +14,7 @@ class API {
     if (empty($scraper->getCourseExams()))
       return;
 
-    $found = true; // If course exams was found
+    $this->found = true; // If course exams was found
 
     $this->result['name'] = $scraper->getCourseName();
     $this->result['hp'] = $scraper->getCourseHp();

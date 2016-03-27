@@ -1,4 +1,4 @@
-# Tenta-odds
-Webbtjänst för att räkna ut oddsen att klara enskilda kurser på Linköpings universitet.
+# Tentan.se
+Webbtjänst för att se statistik om enskilda kurser på Linköpings universitet.
 
 <b><i>Under utveckling</i></b>

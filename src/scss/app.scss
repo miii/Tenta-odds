@@ -1,0 +1,120 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,300);
+
+$color: #47d;
+$colorAccent: #58e;
+
+$colorAccent2: #222;
+$colorAccent2rgba: rgba(255, 255, 255, 0.15);
+
+$textShadowDark: rgba(0, 0, 0, 0.3);
+
+$easyColor: #5d5;
+$moderateColor: #ea4;
+$hardColor: #d66;
+
+* {
+  box-sizing: border-box;
+  font-family: 'Open Sans';
+  font-weight: 300;
+  color: #FFF;
+  letter-spacing: 2px;
+}
+
+body {
+  background-color: $color;
+  overflow: hidden;
+}
+
+.view {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.easy { background: $easyColor; }
+.moderate { background: $moderateColor; }
+.hard { background: $hardColor; }
+
+#SearchBox {
+  width: 400px;
+  margin: auto;
+  margin-top: 35vh;
+}
+
+  #SearchBox h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  #SearchBox input {
+    background: $colorAccent;
+    padding: 20px;
+    width: 100%;
+    border: 0;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #SearchBox input::-webkit-input-placeholder {
+    color: #FFF;
+    opacity: 0.4;
+  }
+
+  #Percentage {
+    font-size: 100px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 40vh;
+  }
+
+#Result {
+  width: 1000px;
+  margin: auto;
+  margin-top: 20vh;
+}
+
+  #Result h1 {
+    text-align: center;
+    font-size: 50px;
+    text-shadow: 1px 1px 0 $textShadowDark;
+  }
+
+  #Result h1 span {
+    padding: 0 10px;
+    background: $colorAccent2;
+    font-size: 36px;
+  }
+
+  #Result .ResultCol {
+    width: 230px;
+    float: left;
+    margin: 10px;
+    padding: 20px 0;
+    background: $colorAccent2rgba;
+  }
+
+    #Result .ResultCol h2 {
+      text-align: center;
+      margin: 0;
+      font-size: 40px;
+      color: $colorAccent2;
+      font-weight: 600;
+    }
+
+.TentaChartText {
+  color: $colorAccent2;
+  font-size: 22px;
+}
+
+.TentaChartForeground {
+  stroke: #222;
+  stroke-width: 12px;
+  fill: transparent;
+}
+
+.TentaChartBackground {
+  stroke: #FFF;
+  stroke-width: 6px;
+  fill: transparent;
+}

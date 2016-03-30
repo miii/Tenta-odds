@@ -7,7 +7,8 @@
     var settings = $.extend({
       percent: -1,
       radius: 70,
-      delay: 1500
+      delay: 1500,
+      reset: false
     }, options);
 
     return this.each(function () {
@@ -50,14 +51,12 @@
       var step = (percentTo - percentFrom) / (60 / 1000 * settings.delay);
 
       var percentProgress = percentFrom;
+      if (settings.reset)
+        percentProgress = percentTo = 0;
+
       TentaChartRender();
 
       function TentaChartRender() {
-        if (Math.abs(percentProgress - percentTo) > Math.abs(step / 2))
-          percentProgress += step;
-        else
-          return svg.attr('data-percent-atm', percentTo);
-
         requestAnimationFrame(TentaChartRender);
 
         var angle = (Math.PI * 2 * settings.radius) * percentProgress / 100;
@@ -65,6 +64,10 @@
         svg.attr('data-percent-atm', percentProgress);
         text.text(Math.round(percentProgress) + '%');
 
+        if (Math.abs(percentProgress - percentTo) > Math.abs(step / 2))
+          percentProgress += step;
+        else
+          return svg.attr('data-percent-atm', percentTo);
       }
     });
 

@@ -9,8 +9,8 @@ $colorAccent2rgba: rgba(255, 255, 255, 0.15);
 $textShadowDark: rgba(0, 0, 0, 0.3);
 
 $easyColor: #5d5;
-$moderateColor: #ea4;
-$hardColor: #d66;
+$moderateColor: #e93;
+$hardColor: #c44;
 
 * {
   box-sizing: border-box;
@@ -80,7 +80,7 @@ body {
     text-shadow: 1px 1px 0 $textShadowDark;
   }
 
-  #Result h1 span {
+  #Result h1 .hp {
     padding: 0 10px;
     background: $colorAccent2;
     font-size: 36px;
@@ -101,6 +101,12 @@ body {
       color: $colorAccent2;
       font-weight: 600;
     }
+
+#loading {
+  margin: auto;
+  margin-top: 40vh;
+  display: block;
+}
 
 .TentaChartText {
   color: $colorAccent2;

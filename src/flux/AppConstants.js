@@ -1,9 +1,10 @@
 var AppConstants = {
-///////////////////////////////////////////
-  ACTION_ADD_ITEM: "D_ADD_ITEM",
-  ///////////////////////////////////////////
-  EVENT_LIST_CHANGED: "EVENT_LIST_CHANGED"
-  ///////////////////////////////////////////
+  ACTION_GET_STATS:     "ACTION_GET_STATS",
+
+  EVENT_NEW_DATA:       "EVENT_NEW_DATA",
+
+  STATUS_FETCHING:      "STATUS_FETCHING",
+  STATUS_FETCHING_OFF:  "STATUS_SEARCH",
 };
 
 module.exports = AppConstants;

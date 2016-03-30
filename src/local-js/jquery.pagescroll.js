@@ -9,15 +9,16 @@
 
     var settings = $.extend({
       duration: 800,
-      enabled: true,
+      disable: false,
       start: 0
     }, options);
 
-    if (!settings.enabled) {
+    if (settings.disable) {
       return this.each(function () {
         for (i = 0; i < pageScrollElements.length; i++)
-          if (pageScrollElements[i] == this)
-            delete pageScrollElements[i];
+          if (pageScrollElements[i] == this) {
+            pageScrollElements.splice(i, 1);
+          }
       });
     }
 
@@ -51,8 +52,9 @@
       pageScrollElements.push(this);
 
       currentPageIndex = settings.start;
-      if (currentPageIndex > 0 && currentPageIndex < pageScrollElements.length)
+      if (this == pageScrollElements[currentPageIndex]) {
         animateToPage(currentPageIndex);
+      }
     });
 
   }

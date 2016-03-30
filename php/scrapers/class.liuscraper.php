@@ -9,8 +9,6 @@ class LIUScraper implements ScraperInterface {
 
   public function __construct($courseCode) {
     $this->courseCode = strtoupper($courseCode);
-    // Fetch data from source
-    $this->_fetchData();
   }
 
   public function getCourseName() {
@@ -78,13 +76,7 @@ class LIUScraper implements ScraperInterface {
     return $mainExams;
   }
 
-  private function _validateInput() {
-    // Validate course code given by the user
-    if (preg_match("/^[a-z]{3}[0-9]{3}$/i", $this->courseCode))
-      $this->valid = true;
-  }
-
-  private function _fetchData() {
+  public function fetchData() {
     // Fetch HTML content from LIU
     $content = file_get_contents("http://www4.student.liu.se/tentaresult/?kurskod={$this->courseCode}&search=S%F6k");
     $content = utf8_encode(str_replace("\n", '', $content));
@@ -131,6 +123,12 @@ class LIUScraper implements ScraperInterface {
 
     }
 
+  }
+
+  private function _validateInput() {
+    // Validate course code given by the user
+    if (preg_match("/^[a-z]{3}[0-9]{3}$/i", $this->courseCode))
+      $this->valid = true;
   }
 
 }

@@ -4,26 +4,31 @@ class Cache {
 
   private $cachePath = '../../php/cache/%s.cache';
   private $cacheTime = 432000; // 5 days
-  private $cacheEnabled = false; // Delete in production
+  private $cacheEnabled = true; // Delete in production
 
   private $courseName;
   private $cacheFile;
   private $timestampsFile;
+  private $timestamps;
 
   public function __construct($courseName) {
     $this->courseName = $courseName;
     $this->cacheFile = $this->_getCacheFile($courseName);
     $this->timestampsFile = $this->_getCacheFile('timestamps');
+    $this->timestamps = $this->_readTimestamps();
   }
 
   public function getCachedData() {
     if (!$this->cacheEnabled)
-      return array();
+      return array(false, false);
 
     if (file_exists($this->cacheFile))
-      return json_decode(file_get_contents($this->cacheFile));
+      return array(
+        $this->timestamps[$this->courseName],
+        json_decode(file_get_contents($this->cacheFile))
+      );
 
-    return array();
+    return array(false, false);
   }
 
   public function saveToCache($data) {
@@ -32,26 +37,24 @@ class Cache {
 
     file_put_contents($this->cacheFile, json_encode($data));
 
-    $timestamps = $this->_readTimestamps();
-    $timestamps[$this->courseName] = time();
-    $this->_saveTimestamps($timestamps);
+    $this->timestamps[$this->courseName] = time();
+    $this->_saveTimestamps($this->timestamps);
   }
 
   public function clean() {
     if (!$this->cacheEnabled)
       return;
 
-    $timestamps = $this->_readTimestamps();
-    $beforeClean = $timestamps;
+    $beforeClean = $this->timestamps;
     $currentTimestamp = time();
 
-    foreach($timestamps as $courseName => $timestamp)
+    foreach($this->timestamps as $courseName => $timestamp)
       if ($currentTimestamp - $this->cacheTime > $timestamp) {
         unset($timestamps[$courseName]);
         unlink($this->_getCacheFile($courseName));
       }
 
-    if ($beforeClean != $timestamps)
+    if ($beforeClean != $this->timestamps)
       $this->_saveTimestamps($timestamps);
   }
 

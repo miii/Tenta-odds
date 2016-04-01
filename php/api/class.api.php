@@ -4,6 +4,8 @@ class API {
 
   private $result = null;
   private $found = false;
+  private $errorCode = false;
+  private $timestamp = null;
 
   private $courseName;
   private $scraper;
@@ -22,17 +24,20 @@ class API {
   public function getJSON() {
     $data = array(
       'found' => $this->found,
-      'result' => $this->result
+      'errorCode' => $this->errorCode,
+      'result' => $this->result,
+      'timestamp' => $this->timestamp
     );
     return json_encode($data);
   }
 
   public function getData() {
-    $cache = $this->cache->getCachedData();
+    list($cacheTimestamp, $cache) = $this->cache->getCachedData();
 
     if (!empty($cache)) {
       $this->found = true;
       $this->result = $cache;
+      $this->timestamp = $cacheTimestamp;
       return;
     }
 
@@ -43,11 +48,16 @@ class API {
     $scraper = $this->scraper;
     $scraper->fetchData();
 
-    // Return if no course exams was found
+    // Return if no tentamen was found
+    if ($scraper->getCourseExams() === false)
+      return $this->errorCode = 2;
+
+    // Return if the course does not exists
     if (empty($scraper->getCourseExams()))
-      return;
+      return $this->errorCode = 1;
 
     $this->found = true; // If course exams was found
+    $this->timestamp = time();
 
     $this->result['name'] = $scraper->getCourseName();
     $this->result['hp'] = $scraper->getCourseHp();

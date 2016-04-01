@@ -48,15 +48,28 @@ var Results = React.createClass({
   render: function() {
     if (this.state.visible) {
 
+      var courseCode = TentaStore.getCourseCode();
+      var courseName = TentaStore.getCourseName();
+      var courseHP = TentaStore.getCourseHP();
+      var courseGradeData = TentaStore.getCourseGradeData();
+      var lastCourseGradeData = TentaStore.getLastCourseGradeData();
+      var updated = TentaStore.getLastUpdateString();
+
       return (
         <ResultView
-          course="Vektoranalys"
-          hp="6"
-          difficulty="hard"
-          gradeU="55"
-          grade3="20"
-          grade4="15"
-          grade5="10" />
+          courseCode={courseCode}
+          courseName={courseName}
+          courseHP={courseHP}
+          difficulty={courseGradeData.difficulty}
+          gradeU={courseGradeData.U}
+          grade3={courseGradeData.g3}
+          grade4={courseGradeData.g4}
+          grade5={courseGradeData.g5}
+          lastGradeU={lastCourseGradeData.U}
+          lastGrade3={lastCourseGradeData.g3}
+          lastGrade4={lastCourseGradeData.g4}
+          lastGrade5={lastCourseGradeData.g5}
+          updated={updated} />
       );
 
     }

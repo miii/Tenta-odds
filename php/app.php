@@ -7,7 +7,10 @@ include('api/class.api.php');
 include('api/class.cache.php');
 
 // Get course name from user
-$courseName = @$_GET['course'];
+$courseName = strtoupper(@$_POST['course']);
+
+if (!$courseName)
+  die();
 
 // Scrape data from LIU
 $scraper = new LIUScraper($courseName);

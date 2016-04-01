@@ -13,6 +13,9 @@
 
     return this.each(function () {
 
+      settings.radius = Math.round($(this).width() / 3.3);
+      $(this).height($(this).width() * 0.9);
+
       var chartSVG = $(this).find('.chartSVG')[0];
 
       if (!chartSVG) {
@@ -22,10 +25,14 @@
             'width="100%" ' +
             'height="100%" ' +
             'style="padding: 30px 0"' +
-            'data-speed="' + settings.speed + '"' +
             'data-radius="' + settings.radius + '"' +
           '>' +
-            '<circle cx="50%" cy="50%" r="' + settings.radius + '" class="TentaChartBackground" />' +
+            '<circle ' +
+              'cx="50%" ' +
+              'cy="50%" ' +
+              'r="' + settings.radius + '" ' +
+              'class="TentaChartBackground" ' +
+            '/>' +
             '<circle ' +
               'cx="50%" ' +
               'cy="50%" ' +
@@ -33,7 +40,8 @@
               'class="TentaChartForeground" ' +
               'stroke-dasharray="0, 2000" ' +
               'style="transform: rotate(-90deg); transform-origin: center center"/>' +
-            '<text text-anchor="middle" x="50%" y="55%" style="letter-spacing: 0" class="TentaChartText">0%</text>' +
+            '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' +
+            '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)</text>' +
           '</svg>'
         );
       } else {
@@ -57,8 +65,6 @@
       TentaChartRender();
 
       function TentaChartRender() {
-        requestAnimationFrame(TentaChartRender);
-
         var angle = (Math.PI * 2 * settings.radius) * percentProgress / 100;
         circle.attr('stroke-dasharray',  angle + ', 20000');
         svg.attr('data-percent-atm', percentProgress);
@@ -68,6 +74,8 @@
           percentProgress += step;
         else
           return svg.attr('data-percent-atm', percentTo);
+
+        requestAnimationFrame(TentaChartRender);
       }
     });
 

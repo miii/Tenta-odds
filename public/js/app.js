@@ -29260,24 +29260,12 @@ var ResultView = React.createClass({
 
   render: function () {
     var classNames = "view " + this.props.difficulty;
-    return React.createElement(
-      'div',
-      { id: 'ResultView', className: classNames },
-      React.createElement(
+
+    // If custom grades (U/3)
+    if (this.props.grade4 + this.props.grade5 < 1) {
+      var cols = React.createElement(
         'div',
-        { id: 'Result' },
-        React.createElement(
-          'h1',
-          null,
-          this.props.course,
-          ' ',
-          React.createElement(
-            'span',
-            { className: 'hp' },
-            this.props.hp,
-            ' HP'
-          )
-        ),
+        { className: 'overflowfix customgrades' },
         React.createElement(
           'div',
           { className: 'ResultCol' },
@@ -29286,7 +29274,7 @@ var ResultView = React.createClass({
             null,
             'U'
           ),
-          React.createElement('div', { className: 'circle', 'data-percent': this.props.gradeU })
+          React.createElement('div', { className: 'circle', 'data-percent': this.props.gradeU, 'data-percent-last': this.props.lastGradeU })
         ),
         React.createElement(
           'div',
@@ -29296,27 +29284,86 @@ var ResultView = React.createClass({
             null,
             '3'
           ),
-          React.createElement('div', { className: 'circle', 'data-percent': this.props.grade3 })
+          React.createElement('div', { className: 'circle', 'data-percent': this.props.grade3, 'data-percent-last': this.props.lastGrade3 })
+        )
+      );
+
+      // If not custom grades (U/3/4/5)
+    } else {
+        var cols = React.createElement(
+          'div',
+          { className: 'overflowfix' },
+          React.createElement(
+            'div',
+            { className: 'ResultCol' },
+            React.createElement(
+              'h2',
+              null,
+              'U'
+            ),
+            React.createElement('div', { className: 'circle', 'data-percent': this.props.gradeU, 'data-percent-last': this.props.lastGradeU })
+          ),
+          React.createElement(
+            'div',
+            { className: 'ResultCol' },
+            React.createElement(
+              'h2',
+              null,
+              '3'
+            ),
+            React.createElement('div', { className: 'circle', 'data-percent': this.props.grade3, 'data-percent-last': this.props.lastGrade3 })
+          ),
+          React.createElement(
+            'div',
+            { className: 'ResultCol' },
+            React.createElement(
+              'h2',
+              null,
+              '4'
+            ),
+            React.createElement('div', { className: 'circle', 'data-percent': this.props.grade4, 'data-percent-last': this.props.lastGrade4 })
+          ),
+          React.createElement(
+            'div',
+            { className: 'ResultCol' },
+            React.createElement(
+              'h2',
+              null,
+              '5'
+            ),
+            React.createElement('div', { className: 'circle', 'data-percent': this.props.grade5, 'data-percent-last': this.props.lastGrade5 })
+          )
+        );
+      }
+
+    return React.createElement(
+      'div',
+      { id: 'ResultView', className: classNames },
+      React.createElement(
+        'div',
+        { id: 'Result' },
+        React.createElement(
+          'h3',
+          null,
+          this.props.courseCode,
+          ' - ',
+          this.props.courseHP,
+          ' HP'
         ),
         React.createElement(
-          'div',
-          { className: 'ResultCol' },
-          React.createElement(
-            'h2',
-            null,
-            '4'
-          ),
-          React.createElement('div', { className: 'circle', 'data-percent': this.props.grade4 })
+          'h1',
+          null,
+          this.props.courseName
         ),
+        cols,
         React.createElement(
-          'div',
-          { className: 'ResultCol' },
-          React.createElement(
-            'h2',
-            null,
-            '5'
-          ),
-          React.createElement('div', { className: 'circle', 'data-percent': this.props.grade5 })
+          'h4',
+          null,
+          'Senast uppdaterad ',
+          this.props.updated,
+          React.createElement('br', null),
+          'Siffror i parenteser visar den senaste tentan',
+          React.createElement('br', null)
         )
       )
     );
@@ -29378,14 +29425,27 @@ var Results = React.createClass({
   render: function () {
     if (this.state.visible) {
 
+      var courseCode = TentaStore.getCourseCode();
+      var courseName = TentaStore.getCourseName();
+      var courseHP = TentaStore.getCourseHP();
+      var courseGradeData = TentaStore.getCourseGradeData();
+      var lastCourseGradeData = TentaStore.getLastCourseGradeData();
+      var updated = TentaStore.getLastUpdateString();
+
       return React.createElement(ResultView, {
-        course: 'Vektoranalys',
-        hp: '6',
-        difficulty: 'hard',
-        gradeU: '55',
-        grade3: '20',
-        grade4: '15',
-        grade5: '10' });
+        courseCode: courseCode,
+        courseName: courseName,
+        courseHP: courseHP,
+        difficulty: courseGradeData.difficulty,
+        gradeU: courseGradeData.U,
+        grade3: courseGradeData.g3,
+        grade4: courseGradeData.g4,
+        grade5: courseGradeData.g5,
+        lastGradeU: lastCourseGradeData.U,
+        lastGrade3: lastCourseGradeData.g3,
+        lastGrade4: lastCourseGradeData.g4,
+        lastGrade5: lastCourseGradeData.g5,
+        updated: updated });
     }
     return false;
   },
@@ -29434,10 +29494,11 @@ var SearchBox = React.createClass({
         { id: 'searchform', onSubmit: this.onSubmit },
         React.createElement('input', { type: 'text',
           placeholder: 'TNA001',
-          pattern: '[A-Za-z]{3}[0-9]{3}',
+          pattern: '[A-Za-z]{3,4}[0-9]{2,3}',
           onChange: this.onInputChange,
           value: this.inputValue,
           maxLength: '6',
+          minLength: '6',
           spellCheck: 'false',
           autoFocus: true, required: true })
       )
@@ -29463,12 +29524,17 @@ var SearchBox = React.createClass({
 module.exports = SearchBox;
 
 },{"../flux/AppConstants":169,"../flux/AppDispatcher":170,"../flux/stores/TentaStore":171,"react":163}],168:[function(require,module,exports){
+(function (global){
 var React = require('react');
 var AppDispatcher = require('../flux/AppDispatcher');
 var TentaStore = require('../flux/stores/TentaStore');
 var APP = require('../flux/AppConstants');
 
 var SearchBox = require('./SearchBox.jsx');
+
+// Jquery
+global.jQuery = $ = require('jquery');
+require('../local-js/jquery.toast.js');
 
 var SearchView = React.createClass({
   displayName: 'SearchView',
@@ -29487,22 +29553,43 @@ var SearchView = React.createClass({
     TentaStore.bind(APP.STATUS_FETCHING_OFF, function () {
       self.setState({ isLoading: false });
     });
+    TentaStore.bind(APP.STATUS_ERROR_OCCURED, this.onError);
   },
   render: function () {
     if (this.state.isLoading) return React.createElement('img', { id: 'loading', src: 'images/ring.svg', alt: 'Loading' });else return React.createElement(SearchBox, { university: 'LiU' });
+  },
+
+  onError: function () {
+    var message;
+
+    switch (TentaStore.getErrorCode()) {
+      case 0:
+        message = 'Attans! En bugg har smugit sig i koden';
+        break;
+      case 1:
+        message = 'Ingen kurs hittad med den sökta kurskoden';
+        break;
+      case 2:
+        message = 'Ingen tentamen hittad';
+        break;
+    }
+
+    $.makeToast(message);
   }
 });
 
 module.exports = SearchView;
 
-},{"../flux/AppConstants":169,"../flux/AppDispatcher":170,"../flux/stores/TentaStore":171,"./SearchBox.jsx":167,"react":163}],169:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../flux/AppConstants":169,"../flux/AppDispatcher":170,"../flux/stores/TentaStore":171,"../local-js/jquery.toast.js":174,"./SearchBox.jsx":167,"jquery":31,"react":163}],169:[function(require,module,exports){
 var AppConstants = {
   ACTION_GET_STATS: "ACTION_GET_STATS",
 
   EVENT_NEW_DATA: "EVENT_NEW_DATA",
 
   STATUS_FETCHING: "STATUS_FETCHING",
-  STATUS_FETCHING_OFF: "STATUS_SEARCH"
+  STATUS_FETCHING_OFF: "STATUS_SEARCH",
+  STATUS_ERROR_OCCURED: "STATUS_ERROR_OCCURED"
 };
 
 module.exports = AppConstants;
@@ -29518,27 +29605,128 @@ var AppDispatcher = require('../AppDispatcher');
 var MicroEvent = require('microevent');
 var APP = require('../AppConstants');
 
+$ = require('jquery');
+
 ///////////////////////////////////////////////
 
 // Create new store
 var TentaStore = function () {
 
   this.data = [];
+  this.errorCode = -1;
+  this.timestamp = null;
 
-  // Get all ingredients
-  this.getGradeStats = function () {
-    console.log('getGradeStats');
+  this.getErrorCode = function () {
+    return this.errorCode;
   };
 
-  // Add new ingredient to list
-  this.getCourseStats = function (courseName) {
-    // TODO: Fetch stats
+  this.getCourseCode = function () {
+    return this.data.code;
+  };
+
+  this.getCourseName = function () {
+    return this.data.name;
+  };
+
+  this.getCourseHP = function () {
+    return this.data.hp;
+  };
+
+  this.getLastUpdateString = function () {
+    var timediff = Date.now() / 1000 - this.timestamp;
+    var string = '';
+
+    if (timediff < 30) // Recently
+      string = 'nyss';else if (timediff < 100) // < ~1.7 minutes
+      string = 'för 1 minut sedan';else if (timediff < 3000) // < 1 hour
+      string = 'för ' + Math.round(timediff / 60) + ' minuter sedan';else if (timediff < 6100) // < ~1.7 hours
+      string = '1 timme sedan';else if (timediff < 84600) // < 1 day
+      string = 'för ' + Math.round(timediff / 86400) + ' timmar sedan';else if (timediff < 146880) // ~1.7 days
+      string = 'för 1 dag sedan';else string = 'för ' + Math.round(timediff / 86400) + ' dagar sedan';
+
+    return string;
+  };
+
+  this.getCourseGradeData = function () {
+    var grades = {
+      'U': 0,
+      'g3': 0,
+      'g4': 0,
+      'g5': 0,
+      'total': 0
+    };
+
+    for (i = 0; i < this.data.exams.length; i++) {
+      var exam = this.data.exams[i];
+      grades.U += exam.grades.U;
+      grades.g3 += exam.grades[3];
+      grades.g4 += exam.grades[4];
+      grades.g5 += exam.grades[5];
+      grades.total += exam.participants;
+    }
+
+    var data = {
+      'U': Math.round(100 * grades.U / grades.total),
+      'g3': Math.round(100 * grades.g3 / grades.total),
+      'g4': Math.round(100 * grades.g4 / grades.total),
+      'g5': Math.round(100 * grades.g5 / grades.total)
+    };
+
+    if (data.U > 50) data.difficulty = 'hard';else if (data.U > 40) data.difficulty = 'moderate';else data.difficulty = 'easy';
+
+    return data;
+  };
+
+  this.getLastCourseGradeData = function () {
+    var exam = this.data.exams[0];
+    var grades = {
+      'U': exam.grades.U,
+      'g3': exam.grades[3],
+      'g4': exam.grades[4],
+      'g5': exam.grades[5],
+      'total': exam.participants
+    };
+
+    var data = {
+      'U': Math.round(100 * grades.U / grades.total),
+      'g3': Math.round(100 * grades.g3 / grades.total),
+      'g4': Math.round(100 * grades.g4 / grades.total),
+      'g5': Math.round(100 * grades.g5 / grades.total)
+    };
+
+    return data;
+  };
+
+  // Fetch course data from API
+  this.getDataFromAPI = function (courseName) {
     TentaStore.trigger(APP.STATUS_FETCHING);
 
-    setTimeout(function () {
-      TentaStore.trigger(APP.STATUS_FETCHING_OFF);
-      TentaStore.trigger(APP.EVENT_NEW_DATA);
-    }, 1000);
+    $.ajax({
+      type: 'POST',
+      url: 'api/exams.php',
+      data: { 'course': courseName },
+      dataType: 'JSON',
+      success: function (data) {
+
+        TentaStore.trigger(APP.STATUS_FETCHING_OFF);
+
+        if (!data.found) {
+          TentaStore.errorCode = data.errorCode;
+          TentaStore.trigger(APP.STATUS_ERROR_OCCURED);
+          return;
+        }
+
+        TentaStore.data = data.result;
+        TentaStore.timestamp = data.timestamp;
+        TentaStore.trigger(APP.EVENT_NEW_DATA);
+      },
+      error: function (data) {
+        console.log('Felaktig data från API: ', data.responseText);
+        TentaStore.errorCode = 0;
+        TentaStore.trigger(APP.STATUS_FETCHING_OFF);
+        TentaStore.trigger(APP.STATUS_ERROR_OCCURED);
+      }
+    });
   };
 };
 
@@ -29555,7 +29743,7 @@ AppDispatcher.register(function (payload) {
 
     // Get course stats from API
     case APP.ACTION_GET_STATS:
-      TentaStore.getCourseStats(payload.data.courseName);
+      TentaStore.getDataFromAPI(payload.data.courseName);
       break;
 
   }
@@ -29567,7 +29755,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = TentaStore;
 
-},{"../AppConstants":169,"../AppDispatcher":170,"microevent":32}],172:[function(require,module,exports){
+},{"../AppConstants":169,"../AppDispatcher":170,"jquery":31,"microevent":32}],172:[function(require,module,exports){
 /* Plugin by Jacob Andersson (http://jacob-andersson.com) */
 
 (function ($) {
@@ -29643,10 +29831,13 @@ module.exports = TentaStore;
 
     return this.each(function () {
 
+      settings.radius = Math.round($(this).width() / 3.3);
+      $(this).height($(this).width() * 0.9);
+
       var chartSVG = $(this).find('.chartSVG')[0];
 
       if (!chartSVG) {
-        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-speed="' + settings.speed + '"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle cx="50%" cy="50%" r="' + settings.radius + '" class="TentaChartBackground" />' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center"/>' + '<text text-anchor="middle" x="50%" y="55%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '</svg>');
+        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartBackground" ' + '/>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center"/>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)</text>' + '</svg>');
       } else {
         settings.speed = $(chartSVG).attr('data-speed') || settings.speed;
         settings.radius = $(chartSVG).attr('data-radius') || settings.radius;
@@ -29667,16 +29858,42 @@ module.exports = TentaStore;
       TentaChartRender();
 
       function TentaChartRender() {
-        requestAnimationFrame(TentaChartRender);
-
         var angle = Math.PI * 2 * settings.radius * percentProgress / 100;
         circle.attr('stroke-dasharray', angle + ', 20000');
         svg.attr('data-percent-atm', percentProgress);
         text.text(Math.round(percentProgress) + '%');
 
         if (Math.abs(percentProgress - percentTo) > Math.abs(step / 2)) percentProgress += step;else return svg.attr('data-percent-atm', percentTo);
+
+        requestAnimationFrame(TentaChartRender);
       }
     });
+  };
+})(jQuery);
+
+},{}],174:[function(require,module,exports){
+/* Plugin by Jacob Andersson (http://jacob-andersson.com) */
+
+(function ($) {
+
+  var toastTimeout;
+
+  $.makeToast = function (text, options) {
+
+    var settings = $.extend({
+      delay: 3500
+    }, options);
+
+    $('#toast_message').hide();
+    clearTimeout(toastTimeout);
+
+    $('#toast_message').text(text).fadeIn('slow');
+
+    toastTimeout = setTimeout(function () {
+      $('#toast_message').fadeOut('slow', function () {
+        $(this).text('');
+      });
+    }, settings.delay);
   };
 })(jQuery);
 

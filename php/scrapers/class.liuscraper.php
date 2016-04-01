@@ -8,7 +8,7 @@ class LIUScraper implements ScraperInterface {
   private $courseCode;
 
   public function __construct($courseCode) {
-    $this->courseCode = strtoupper($courseCode);
+    $this->courseCode = $courseCode;
   }
 
   public function getCourseName() {
@@ -32,16 +32,15 @@ class LIUScraper implements ScraperInterface {
     $examType = null;
     // Find only exams (no tests etc)
     foreach($this->exams as $type => $list) {
-      if (strpos($type, 'tentamen') !== false) {
+      if (strpos(strtolower($type), 'tentamen') !== false) {
         $examType = $type;
         break;
       }
-      echo $type;
     }
 
     // If no exam was found, return nothing
     if (!$examType)
-      return array();
+      return false;
 
     // Otherwise, return found exams
     return $this->exams[$examType];
@@ -95,7 +94,7 @@ class LIUScraper implements ScraperInterface {
     foreach ($matches[1] as $i => $event) {
 
       // Find meta type, HP etc.
-      preg_match('/<BR>[A-Z0-9]+:([a-zåäö -,]+)([0-9]+\.[0-9]+).+?([0-9]{4}-[0-9]{2}-[0-9]{2})/i', $event, $info);
+      preg_match('/<BR>[A-Z0-9]+:([a-zåäö -,;0-9]+)([0-9]+\.[0-9]+).+?([0-9]{4}-[0-9]{2}-[0-9]{2})/i', $event, $info);
       // Find result data
       preg_match_all('/([A-Z0-9]).<\/TD><TD>([0-9]+)<\/TD><\/TR>/i', $event, $grades, PREG_SET_ORDER);
 

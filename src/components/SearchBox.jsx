@@ -16,10 +16,11 @@ var SearchBox = React.createClass({
         <form id="searchform" onSubmit={this.onSubmit}>
           <input type="text"
             placeholder="TNA001"
-            pattern="[A-Za-z]{3}[0-9]{3}"
+            pattern="[A-Za-z]{3,4}[0-9]{2,3}"
             onChange={this.onInputChange}
             value={this.inputValue}
             maxLength="6"
+            minLength="6"
             spellCheck="false"
             autoFocus required />
         </form>

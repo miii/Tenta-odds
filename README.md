@@ -12,6 +12,7 @@ http://tentan.se/
 ## TODO
 ##### ASAP:
 - [ ] Lägg till Google Analytics
+- [ ] Kommentera koden
 - [ ] Lös laddningsanimationen, SMIL animations är ajabaja
 - [ ] Stöd för Firefox (pin!)
 

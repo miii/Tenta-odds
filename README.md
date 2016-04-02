@@ -9,6 +9,10 @@ http://tentan.se/
 ## Releaser
 - <b>2 April 2016</b>: <i>v1.0.0 BETA</i>
 
+## Kända buggar
+- [ ] Toast syns bara en gång
+- [ ] Pagescroll funkar inte i Firefox
+
 ## TODO
 ##### ASAP:
 - [ ] Lägg till Google Analytics

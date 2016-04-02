@@ -42,7 +42,7 @@ var TentaStore = function() {
     else if (timediff < 6100) // < ~1.7 hours
       string = '1 timme sedan';
     else if (timediff < 84600) // < 1 day
-      string = 'för ' + Math.round(timediff / 86400) + ' timmar sedan';
+      string = 'för ' + Math.round(timediff / 3600) + ' timmar sedan';
     else if (timediff < 146880) // ~1.7 days
       string = 'för 1 dag sedan';
     else
@@ -83,6 +83,9 @@ var TentaStore = function() {
     else
       data.difficulty = 'easy';
 
+    if (data.U + data.g3 + data.g4 + data.g5 < 100)
+      data.U++;
+
     return data;
   }
 
@@ -102,6 +105,9 @@ var TentaStore = function() {
       'g4': Math.round(100 * grades.g4 / grades.total),
       'g5': Math.round(100 * grades.g5 / grades.total),
     }
+
+    if (data.U + data.g3 + data.g4 + data.g5 < 100)
+      data.U++;
 
     return data;
   }

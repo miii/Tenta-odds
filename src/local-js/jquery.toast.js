@@ -10,14 +10,15 @@
       delay: 3500
     }, options);
 
-    $('#toast_message').hide();
+    $('#toast').hide();
     clearTimeout(toastTimeout);
 
-    $('#toast_message').text(text).fadeIn('slow');
+    $('#toast_message').html(text);
+    $('#toast').fadeIn('slow');
 
     toastTimeout = setTimeout(function() {
-      $('#toast_message').fadeOut('slow', function() {
-        $(this).text('');
+      $('#toast').fadeOut('slow', function() {
+        $(this).hide().text('');
       });
     }, settings.delay);
 

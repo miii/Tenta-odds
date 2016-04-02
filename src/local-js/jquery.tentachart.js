@@ -39,9 +39,12 @@
               'r="' + settings.radius + '" ' +
               'class="TentaChartForeground" ' +
               'stroke-dasharray="0, 2000" ' +
-              'style="transform: rotate(-90deg); transform-origin: center center"/>' +
+              'style="transform: rotate(-90deg); transform-origin: center center">' +
+            '</circle>' +
             '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' +
-            '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)</text>' +
+            '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' +
+            $(this).attr('data-percent-last') +
+            '%)<title>Resultat från senaste tentan</title></text>' +
           '</svg>'
         );
       } else {
@@ -68,7 +71,7 @@
         var angle = (Math.PI * 2 * settings.radius) * percentProgress / 100;
         circle.attr('stroke-dasharray',  angle + ', 20000');
         svg.attr('data-percent-atm', percentProgress);
-        text.text(Math.round(percentProgress) + '%');
+        text.html(Math.round(percentProgress) + '%' + '<title>Snittresultat</title>');
 
         if (Math.abs(percentProgress - percentTo) > Math.abs(step / 2))
           percentProgress += step;

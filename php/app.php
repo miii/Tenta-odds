@@ -9,8 +9,10 @@ include('api/class.cache.php');
 // Get course name from user
 $courseName = strtoupper(@$_POST['course']);
 
-if (!$courseName)
+if (!$courseName) {
+  header('HTTP/1.0 404 Not Found', true, 404);
   die();
+}
 
 // Scrape data from LIU
 $scraper = new LIUScraper($courseName);
@@ -19,7 +21,7 @@ $cache = new Cache($courseName);
 // Initialize API
 $api = new API($courseName, $scraper, $cache);
 
-$cache->clean();
+//$cache->clean();
 $api->getData();
 
 // Return JSON output

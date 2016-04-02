@@ -29362,8 +29362,7 @@ var ResultView = React.createClass({
           'Senast uppdaterad ',
           this.props.updated,
           React.createElement('br', null),
-          'Siffror i parenteser visar den senaste tentan',
-          React.createElement('br', null)
+          'Omtentor är exkluderade från statistiken'
         )
       )
     );
@@ -29408,7 +29407,14 @@ var Results = React.createClass({
       $('.view').pagescroll({
         start: 1
       }, function (index) {
-        $('.circle').tentachart();
+        if (index == 1) $('.circle').tentachart();
+
+        if (index == 1 && !localStorage.UIExplained) {
+          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från senaste tentan', {
+            delay: 10000
+          });
+          localStorage.UIExplained = true;
+        }
       });
     }
   },
@@ -29641,7 +29647,7 @@ var TentaStore = function () {
       string = 'för 1 minut sedan';else if (timediff < 3000) // < 1 hour
       string = 'för ' + Math.round(timediff / 60) + ' minuter sedan';else if (timediff < 6100) // < ~1.7 hours
       string = '1 timme sedan';else if (timediff < 84600) // < 1 day
-      string = 'för ' + Math.round(timediff / 86400) + ' timmar sedan';else if (timediff < 146880) // ~1.7 days
+      string = 'för ' + Math.round(timediff / 3600) + ' timmar sedan';else if (timediff < 146880) // ~1.7 days
       string = 'för 1 dag sedan';else string = 'för ' + Math.round(timediff / 86400) + ' dagar sedan';
 
     return string;
@@ -29674,6 +29680,8 @@ var TentaStore = function () {
 
     if (data.U > 50) data.difficulty = 'hard';else if (data.U > 40) data.difficulty = 'moderate';else data.difficulty = 'easy';
 
+    if (data.U + data.g3 + data.g4 + data.g5 < 100) data.U++;
+
     return data;
   };
 
@@ -29693,6 +29701,8 @@ var TentaStore = function () {
       'g4': Math.round(100 * grades.g4 / grades.total),
       'g5': Math.round(100 * grades.g5 / grades.total)
     };
+
+    if (data.U + data.g3 + data.g4 + data.g5 < 100) data.U++;
 
     return data;
   };
@@ -29837,7 +29847,7 @@ module.exports = TentaStore;
       var chartSVG = $(this).find('.chartSVG')[0];
 
       if (!chartSVG) {
-        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartBackground" ' + '/>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center"/>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)</text>' + '</svg>');
+        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartBackground" ' + '/>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center">' + '</circle>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)<title>Resultat från senaste tentan</title></text>' + '</svg>');
       } else {
         settings.speed = $(chartSVG).attr('data-speed') || settings.speed;
         settings.radius = $(chartSVG).attr('data-radius') || settings.radius;
@@ -29861,7 +29871,7 @@ module.exports = TentaStore;
         var angle = Math.PI * 2 * settings.radius * percentProgress / 100;
         circle.attr('stroke-dasharray', angle + ', 20000');
         svg.attr('data-percent-atm', percentProgress);
-        text.text(Math.round(percentProgress) + '%');
+        text.html(Math.round(percentProgress) + '%' + '<title>Snittresultat</title>');
 
         if (Math.abs(percentProgress - percentTo) > Math.abs(step / 2)) percentProgress += step;else return svg.attr('data-percent-atm', percentTo);
 
@@ -29884,14 +29894,15 @@ module.exports = TentaStore;
       delay: 3500
     }, options);
 
-    $('#toast_message').hide();
+    $('#toast').hide();
     clearTimeout(toastTimeout);
 
-    $('#toast_message').text(text).fadeIn('slow');
+    $('#toast_message').html(text);
+    $('#toast').fadeIn('slow');
 
     toastTimeout = setTimeout(function () {
-      $('#toast_message').fadeOut('slow', function () {
-        $(this).text('');
+      $('#toast').fadeOut('slow', function () {
+        $(this).hide().text('');
       });
     }, settings.delay);
   };

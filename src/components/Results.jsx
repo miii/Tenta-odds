@@ -31,7 +31,16 @@ var Results = React.createClass({
       $('.view').pagescroll({
         start: 1
       }, function(index) {
-        $('.circle').tentachart();
+        if (index == 1)
+          $('.circle').tentachart();
+
+        if (index == 1 && !localStorage.UIExplained) {
+          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från senaste tentan', {
+            delay: 10000
+          });
+          localStorage.UIExplained = true;
+        }
+
       });
     }
   },

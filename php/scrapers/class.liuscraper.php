@@ -86,7 +86,7 @@ class LIUScraper implements ScraperInterface {
         return;
 
     // Find and set course name and HP
-    preg_match('/<TD>.+?:([a-zåäö -+]+)([0-9]+\.[0-9]+).+?<BR>/i', $matches[1][0], $courseInfo);
+    preg_match('/<TD>.+?:([a-zåäö0-9 \-+:]+)([0-9]+\.[0-9]+).+?<BR>/i', $matches[1][0], $courseInfo);
     $this->courseName = trim($courseInfo[1]);
     $this->courseHp = (float) $courseInfo[2];
 
@@ -94,7 +94,7 @@ class LIUScraper implements ScraperInterface {
     foreach ($matches[1] as $i => $event) {
 
       // Find meta type, HP etc.
-      preg_match('/<BR>[A-Z0-9]+:([a-zåäö -,;0-9]+)([0-9]+\.[0-9]+).+?([0-9]{4}-[0-9]{2}-[0-9]{2})/i', $event, $info);
+      preg_match('/<BR>[A-Z0-9]+:([a-zåäö \-,;0-9]+)([0-9]+\.[0-9]+).+?([0-9]{4}-[0-9]{2}-[0-9]{2})/i', $event, $info);
       // Find result data
       preg_match_all('/([A-Z0-9]).<\/TD><TD>([0-9]+)<\/TD><\/TR>/i', $event, $grades, PREG_SET_ORDER);
 

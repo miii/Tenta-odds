@@ -24,10 +24,13 @@ class API {
   public function getJSON() {
     $data = array(
       'found' => $this->found,
-      'errorCode' => $this->errorCode,
       'result' => $this->result,
       'timestamp' => $this->timestamp
     );
+
+    if ($this->errorCode)
+      $data['errorCode'] = $this->errorCode;
+
     return json_encode($data);
   }
 
@@ -48,12 +51,14 @@ class API {
     $scraper = $this->scraper;
     $scraper->fetchData();
 
+    $exams = $scraper->getMainCourseExams();
+
     // Return if no tentamen was found
-    if ($scraper->getCourseExams() === false)
+    if ($exams === false)
       return $this->errorCode = 2;
 
     // Return if the course does not exists
-    if (empty($scraper->getCourseExams()))
+    if (empty($exams))
       return $this->errorCode = 1;
 
     $this->found = true; // If course exams was found
@@ -62,7 +67,7 @@ class API {
     $this->result['name'] = $scraper->getCourseName();
     $this->result['hp'] = $scraper->getCourseHp();
     $this->result['code'] = $scraper->getCourseCode();
-    $this->result['exams'] = $scraper->getMainCourseExams();
+    $this->result['exams'] = $exams;
 
     $this->cache->saveToCache($this->result);
   }

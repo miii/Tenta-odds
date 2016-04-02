@@ -53,8 +53,8 @@ var ResultView = React.createClass({
           {cols}
           <h4>
             Senast uppdaterad {this.props.updated}<br />
-            Siffror i parenteser visar den senaste tentan<br />
-            {/*<a href="#click">Klicka här för att inkludera omtentor.</a>*/}
+            Omtentor är exkluderade från statistiken
+            {/*<a href="#">Inkludera omtentor</a> - <a href="#">Rapportera bugg</a>*/}
           </h4>
         </div>
       </div>

@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,700);
 
 $color: #47d;
 $colorAccent: #58e;
@@ -18,7 +18,7 @@ $hardColor: #c44;
   font-family: 'Open Sans';
   font-weight: 300;
   color: #FFF;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 body {
@@ -147,11 +147,13 @@ a:hover {
 .TentaChartText {
   color: $colorAccent2;
   font-size: 22px;
+  cursor: help;
 }
 
 .TentaChartText2 {
   font-size: 14px;
   transform: translate(0, 18px);
+  cursor: help;
 }
 
 .TentaChartForeground {
@@ -179,30 +181,43 @@ a:hover {
   left: 0;
   bottom: 20px;
   text-align: center;
+  z-index: 1000000;
+  display: none;
 }
 
 #toast span#toast_message {
   color: #FFF;
   line-height: 50px;
-  font-size: 14px;
+  font-size: 13px;
   padding: 10px 20px;
   background: $colorAccent2;
-  display: none;
+}
+
+#toast strong {
+  font-weight: 700;
 }
 
 #credit {
-  width: 165px;
-  position: fixed;
+  width: 500px;
+  position: absolute;
   bottom: 20px;
-  font-size: 14px;
-  right: 0;
-  text-align: center;
-  text-shadow: 1px 1px 1px $textShadowDark;
+  left: 50%;
+  margin-left: -250px;
 }
 
-  #credit h5, h6 {
+  #credit h6 {
     margin: 0;
+    font-size: 9px;
+    line-height: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px $textShadowDark;
   }
+
+.coming-soon {
+  opacity: 0.5;
+  title: 'Kommer snart';
+}
 
 @media screen and (min-width: 1400px) {
 

@@ -11,11 +11,12 @@ http://tentan.se/
 
 ## TODO
 ##### ASAP:
+- [ ] Lägg till Google Analytics
 - [ ] Lös laddningsanimationen, SMIL animations är ajabaja
 - [ ] Stöd för Firefox (pin!)
 
 ##### I framtiden:
-- [ ] Gör en finfin favicon
 - [ ] SEO
+- [ ] Gör en finfin favicon
 - [ ] Möjlighet att välja examinationstyp (ex. projektarbete istället för tentamen)
 - [ ] Möjlighet att kunna välja enskilda tentor till graferna

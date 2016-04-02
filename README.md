@@ -2,6 +2,8 @@
 Webbtjänst för att se statistik om enskilda kurser på Linköpings universitet.<br>
 Finns även möjlighet att lägga till fler universitet i teorin, om datakälla finns.
 
+Byggd av fri vilja med hjälp av [React](https://github.com/facebook/react) och [Flux](https://github.com/facebook/flux).
+
 http://tentan.se/
 
 ## Releaser

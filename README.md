@@ -16,6 +16,7 @@ http://tentan.se/
 - [ ] Stöd för Firefox (pin!)
 
 ##### I framtiden:
+- [ ] Möjlighet att kunna inkludera omtentor
 - [ ] SEO
 - [ ] Gör en finfin favicon
 - [ ] Möjlighet att välja examinationstyp (ex. projektarbete istället för tentamen)

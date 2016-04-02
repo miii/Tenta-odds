@@ -44,7 +44,7 @@
             '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' +
             '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' +
             $(this).attr('data-percent-last') +
-            '%)<title>Resultat från senaste tentan</title></text>' +
+            '%)<title>Resultat från den senaste tentan</title></text>' +
           '</svg>'
         );
       } else {

@@ -35,7 +35,7 @@ var Results = React.createClass({
           $('.circle').tentachart();
 
         if (index == 1 && !localStorage.UIExplained) {
-          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från senaste tentan', {
+          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från den senaste tentan', {
             delay: 10000
           });
           localStorage.UIExplained = true;

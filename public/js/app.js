@@ -29410,7 +29410,7 @@ var Results = React.createClass({
         if (index == 1) $('.circle').tentachart();
 
         if (index == 1 && !localStorage.UIExplained) {
-          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från senaste tentan', {
+          $.makeToast('<strong>Förklaring:</strong> Siffrorna gäller snittresultat respektive resultat från den senaste tentan', {
             delay: 10000
           });
           localStorage.UIExplained = true;
@@ -29847,7 +29847,7 @@ module.exports = TentaStore;
       var chartSVG = $(this).find('.chartSVG')[0];
 
       if (!chartSVG) {
-        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartBackground" ' + '/>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center">' + '</circle>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)<title>Resultat från senaste tentan</title></text>' + '</svg>');
+        $(this).append('<svg ' + 'class="chartSVG" ' + 'width="100%" ' + 'height="100%" ' + 'style="padding: 30px 0"' + 'data-radius="' + settings.radius + '"' + '>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartBackground" ' + '/>' + '<circle ' + 'cx="50%" ' + 'cy="50%" ' + 'r="' + settings.radius + '" ' + 'class="TentaChartForeground" ' + 'stroke-dasharray="0, 2000" ' + 'style="transform: rotate(-90deg); transform-origin: center center">' + '</circle>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText">0%</text>' + '<text text-anchor="middle" x="50%" y="50%" style="letter-spacing: 0" class="TentaChartText2">(' + $(this).attr('data-percent-last') + '%)<title>Resultat från den senaste tentan</title></text>' + '</svg>');
       } else {
         settings.speed = $(chartSVG).attr('data-speed') || settings.speed;
         settings.radius = $(chartSVG).attr('data-radius') || settings.radius;

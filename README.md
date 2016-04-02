@@ -12,6 +12,7 @@ http://tentan.se/
 ## Kända buggar
 - [ ] Toast syns bara en gång
 - [ ] Pagescroll funkar inte i Firefox
+- [ ] Vissa kurser är ej tillgängliga (tex. TNM040)
 
 ## TODO
 ##### ASAP:

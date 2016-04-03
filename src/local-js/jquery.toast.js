@@ -18,7 +18,8 @@
 
     toastTimeout = setTimeout(function() {
       $('#toast').fadeOut('slow', function() {
-        $(this).hide().text('');
+        $(this).hide();
+        $(this).find('#toast_message').text('');
       });
     }, settings.delay);
 

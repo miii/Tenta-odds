@@ -48,12 +48,16 @@ class LIUScraper implements ScraperInterface {
 
   public function getMainCourseExams() {
 
+    // Do not run if exams was not found when scraping (course does not exists)
+    if (empty($this->exams))
+      return array();
+
     // Store main exams
     $mainExams = array();
     $exams = $this->getCourseExams();
-    // Do not run if exams was not found when scraping (course does not exists)
-    if (empty($exams))
-      return array();
+
+    if ($exams === false)
+      return false;
 
     $totalParticipants = 0;
     $totalExams = 0;

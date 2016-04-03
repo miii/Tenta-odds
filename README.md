@@ -10,12 +10,13 @@ http://tentan.se/
 - <b>2 April 2016</b>: <i>v1.0.0 BETA</i>
 
 ## Kända buggar
-- [ ] Toast syns bara en gång
+- [x] Toast syns bara en gång
 - [ ] Pagescroll funkar inte i Firefox
-- [ ] Vissa kurser är ej tillgängliga (tex. TNM040)
+- [x] Vissa kurser är ej tillgängliga (tex. TNM040)
 
 ## TODO
 ##### ASAP:
+- [ ] Välj examinatonstyp på HP istället för "tentamen"
 - [ ] Lägg till Google Analytics
 - [ ] Kommentera koden
 - [ ] Lös laddningsanimationen, SMIL animations är ajabaja

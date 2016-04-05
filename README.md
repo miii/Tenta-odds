@@ -17,7 +17,7 @@ http://tentan.se/
 ## TODO
 ##### ASAP:
 - [ ] Välj examinatonstyp på HP istället för "tentamen"
-- [ ] Lägg till Google Analytics
+- [x] Lägg till Google Analytics
 - [ ] Kommentera koden
 - [ ] Lös laddningsanimationen, SMIL animations är ajabaja
 - [ ] Stöd för Firefox (pin!)

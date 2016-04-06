@@ -16,6 +16,7 @@ http://tentan.se/
 
 ## TODO
 ##### ASAP:
+- [ ] Skifta färgerna på graferna
 - [ ] Välj examinatonstyp på HP istället för "tentamen"
 - [x] Lägg till Google Analytics
 - [ ] Kommentera koden

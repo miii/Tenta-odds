@@ -1105,7 +1105,7 @@ module.exports = performanceNow;
  *
  * @providesModule shallowEqual
  * @typechecks
- * 
+ *
  */
 
 'use strict';
@@ -1288,7 +1288,7 @@ module.exports.Dispatcher = require('./lib/Dispatcher');
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule Dispatcher
- * 
+ *
  * @preventMunge
  */
 
@@ -29460,6 +29460,9 @@ var Results = React.createClass({
     this.setState({
       visible: true
     });
+
+    var uri = '/' + TentaStore.getCourseCode().toLowerCase();
+    ga('send', 'pageview', uri);
   },
   hideResult: function () {
     this.setState({

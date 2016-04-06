@@ -89,6 +89,10 @@ var Results = React.createClass({
     this.setState({
       visible: true
     });
+
+    var uri = '/' + TentaStore.getCourseCode();
+    console.log(uri);
+    //ga('send', 'pageview', );
   },
   hideResult: function() {
     this.setState({

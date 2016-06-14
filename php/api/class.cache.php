@@ -4,7 +4,7 @@ class Cache {
 
   private $cachePath = '../../php/cache/%s.cache';
   private $cacheTime = 432000; // 5 days
-  private $cacheEnabled = true; // Delete in production
+  private $cacheEnabled = false;
 
   private $courseName;
   private $cacheFile;
@@ -15,7 +15,9 @@ class Cache {
     $this->courseName = $courseName;
     $this->cacheFile = $this->_getCacheFile($courseName);
     $this->timestampsFile = $this->_getCacheFile('timestamps');
-    $this->timestamps = $this->_readTimestamps();
+
+    if ($this->cacheEnabled)
+      $this->timestamps = $this->_readTimestamps();
   }
 
   public function getCachedData() {

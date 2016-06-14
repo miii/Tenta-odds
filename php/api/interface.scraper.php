@@ -5,7 +5,6 @@ interface ScraperInterface {
   public function getCourseHp();
   public function getCourseCode();
   public function getCourseExams();
-  public function getMainCourseExams();
 }
 
 ?>

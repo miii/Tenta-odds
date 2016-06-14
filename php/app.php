@@ -7,7 +7,7 @@ include('api/class.api.php');
 include('api/class.cache.php');
 
 // Get course name from user
-$courseName = strtoupper(@$_POST['course']);
+$courseName = strtoupper(@$_GET['course']);
 
 if (!$courseName) {
   header('HTTP/1.0 404 Not Found', true, 404);

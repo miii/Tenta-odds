@@ -51,7 +51,7 @@ class API {
     $scraper = $this->scraper;
     $scraper->fetchData();
 
-    $exams = $scraper->getMainCourseExams();
+    $exams = $scraper->getCourseExams();
 
     // Return if no tentamen was found
     if ($exams === false)
@@ -67,6 +67,7 @@ class API {
     $this->result['name'] = $scraper->getCourseName();
     $this->result['hp'] = $scraper->getCourseHp();
     $this->result['code'] = $scraper->getCourseCode();
+    $this->result['examtypes'] = $scraper->getCourseExamTypes();
     $this->result['exams'] = $exams;
 
     $this->cache->saveToCache($this->result);

@@ -1,7 +1,7 @@
 {
   "name": "react-npm",
-  "version": "2.0.0B",
-  "version_long": "2.0 BETA",
+  "version": "2.0.0",
+  "version_long": "2.0",
   "description": "React Skeleton with Flux",
   "main": "src/app.jsx",
   "scripts": {

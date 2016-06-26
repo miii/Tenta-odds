@@ -4,7 +4,7 @@ class Cache {
 
   private $cachePath = '../../php/cache/%s.cache';
   private $cacheTime = 432000; // 5 days
-  private $cacheEnabled = false;
+  private $cacheEnabled = true;
 
   private $courseName;
   private $cacheFile;
@@ -27,7 +27,7 @@ class Cache {
     if (file_exists($this->cacheFile))
       return array(
         $this->timestamps[$this->courseName],
-        json_decode(file_get_contents($this->cacheFile))
+        json_decode(file_get_contents($this->cacheFile), true)
       );
 
     return array(false, false);
@@ -52,12 +52,14 @@ class Cache {
 
     foreach($this->timestamps as $courseName => $timestamp)
       if ($currentTimestamp - $this->cacheTime > $timestamp) {
-        unset($timestamps[$courseName]);
-        unlink($this->_getCacheFile($courseName));
+        unset($this->timestamps[$courseName]);
+        if (file_exists($this->_getCacheFile($courseName))) {
+          unlink($this->_getCacheFile($courseName));
+        }
       }
 
     if ($beforeClean != $this->timestamps)
-      $this->_saveTimestamps($timestamps);
+      $this->_saveTimestamps($this->timestamps);
   }
 
   private function _readTimestamps() {

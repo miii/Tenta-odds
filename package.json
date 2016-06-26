@@ -1,11 +1,12 @@
 {
   "name": "react-npm",
-  "version": "1.0.0",
+  "version": "2.0.0B",
+  "version_long": "2.0 BETA",
   "description": "React Skeleton with Flux",
   "main": "src/app.jsx",
   "scripts": {
     "watch-js": "watchify src/app.jsx -v -t [ babelify --presets [ react ] ] -o public/js/app.js",
-    "minify-js": "minify public/js/app.js --output public/js/app.min.js",
+    "minify-js": "minify public/js/app.js --output public/js/app.js",
     "build-css": "node-sass src/scss/ -o public/css/ --output-style compressed",
     "watch-css": "nodemon --watch src/scss/ -e scss -x \"npm run build-css\"",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +18,7 @@
     "babelify": "^7.2.0",
     "flux": "^2.1.1",
     "jquery": "^2.2.2",
+    "materialize-css": "^0.97.6",
     "microevent": "^1.0.0",
     "minified-headless": "^0.1.0",
     "normalize.css": "^4.0.0",

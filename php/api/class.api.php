@@ -22,6 +22,11 @@ class API {
   }
 
   public function getJSON() {
+    for($i = 0; $i < count($this->result['exams']); $i++) {
+      $this->result['exams'][$i]['year'] = (int) date('Y', $this->result['exams'][$i]['time']);
+      $this->result['exams'][$i]['datestring'] = strftime("%#d %B", $this->result['exams'][$i]['time']);
+    }
+
     $data = array(
       'found' => $this->found,
       'result' => $this->result,
@@ -52,10 +57,6 @@ class API {
     $scraper->fetchData();
 
     $exams = $scraper->getCourseExams();
-
-    // Return if no tentamen was found
-    if ($exams === false)
-      return $this->errorCode = 2;
 
     // Return if the course does not exists
     if (empty($exams))

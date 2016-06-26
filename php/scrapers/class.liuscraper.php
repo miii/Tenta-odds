@@ -43,7 +43,7 @@ class LIUScraper implements ScraperInterface {
         return;
 
     // Find and set course name and HP
-    preg_match('/<TD>.+?:([a-zåäö0-9 \-+:]+)([0-9]+\.[0-9]+).+?<BR>/i', $matches[1][0], $courseInfo);
+    preg_match('/<TD>.+?:([a-zåäö0-9 \/\-+:]+)([0-9]+\.[0-9]+).+?<BR>/i', $matches[1][0], $courseInfo);
     $this->courseName = trim($courseInfo[1]);
     $this->courseHp = (float) $courseInfo[2];
 
@@ -65,25 +65,26 @@ class LIUScraper implements ScraperInterface {
         $this->examTypes[$examTypeID] = array(
           'code' => $examcode,
           'name' => $type,
-          'hp' => null
+          'hp' => (float) $info[3],
+          'lastUsed' => strtotime($info[4])
         );
       }
 
       $eventData['examtype'] = $examTypeID;
       $eventData['hp'] = (float) $info[3];
-      $eventData['date'] = $info[4];
-
-      $this->examTypes[$examTypeID]['hp'] = $eventData['hp'];
+      $eventData['time'] = strtotime($info[4]);
 
       // Save all grades
-      foreach($grades as $grade)
-        $eventData['grades'][$grade[1]] = (int) $grade[2];
+      foreach($grades as $grade) {
+        $grade[1] = ($grade[1] == 'D' || $grade[1] == 'G' || $grade[1] == 'T') ? '3' : $grade[1];
+        $eventData['grades']['grade' . $grade[1]] = (int) $grade[2];
+      }
 
       // Add missing grades
       $gradesList = array('U', 3, 4, 5);
       foreach($gradesList as $j => $grade)
-        if (!isset($eventData['grades'][$grade]))
-          $eventData['grades'][$grade] = 0; // Set participants to 0
+        if (!isset($eventData['grades']['grade' . $grade]))
+          $eventData['grades']['grade' . $grade] = 0; // Set participants to 0
 
       // Get participants of a single event
       $eventData['participants'] = array_sum($eventData['grades']);
@@ -107,8 +108,15 @@ class LIUScraper implements ScraperInterface {
 
     $mainExamTypeID = null;
     $mainExamHP = -1;
+    $timeThreshold = strtotime("-1 year");
 
     for($i = 0; $i < count($this->examTypes); $i++) {
+      if ($this->examTypes[$i]['lastUsed'] < $timeThreshold)
+        break;
+
+      if ($this->examTypes[$i]['hp'] == $mainExamHP)
+        $mainExamTypeID = null;
+
       if ($this->examTypes[$i]['hp'] > $mainExamHP) {
         $mainExamTypeID = $i;
         $mainExamHP = $this->examTypes[$i]['hp'];
@@ -116,7 +124,7 @@ class LIUScraper implements ScraperInterface {
     }
 
     // Don't pick main exam if no exam HP is above 50% of course HP
-    if ($mainExamHP < (0.5 * $this->courseHp))
+    if ($mainExamHP < (0.5 * $this->courseHp) || is_null($mainExamTypeID))
       return;
 
     $totalParticipants = 0;
@@ -126,16 +134,22 @@ class LIUScraper implements ScraperInterface {
       if ($exam['examtype'] !== $mainExamTypeID)
         continue;
 
+      if ($this->examTypes[$exam['examtype']]['lastUsed'] < $timeThreshold)
+        break;
+
       $totalParticipants += $exam['participants'];
       $totalExams++;
     }
 
     // Get mean participants
-    $meanParticipants = 1.2 * $totalParticipants / $totalExams;
+    $meanParticipants = 1.1 * $totalParticipants / $totalExams;
 
     for ($i = 0; $i < count($this->exams); $i++) {
 
       if ($this->exams[$i]['examtype'] == $mainExamTypeID) {
+        if ($this->examTypes[$mainExamTypeID]['lastUsed'] < $timeThreshold)
+          break;
+
         // Use mean participants as a threeshold when searching for main exams
         if ($this->exams[$i]['participants'] > $meanParticipants)
           $this->exams[$i]['retry'] = false;

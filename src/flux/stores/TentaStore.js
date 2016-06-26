@@ -2,8 +2,6 @@ var AppDispatcher = require('../AppDispatcher');
 var MicroEvent = require('microevent');
 var APP = require('../AppConstants');
 
-$ = require('jquery');
-
 ///////////////////////////////////////////////
 
 // Create new store
@@ -12,6 +10,16 @@ var TentaStore = function() {
   this.data = [];
   this.errorCode = -1;
   this.timestamp = null;
+
+  window.addEventListener('popstate', function(page) {
+    if (page.state == null || page.state.data == null) {
+      window.courseCode = '';
+      TentaStore.trigger(APP.EVENT_NO_DATA);
+    } else {
+      window.courseCode = page.state.data.code;
+      TentaStore.trigger(APP.EVENT_NEW_DATA);
+    }
+  });
 
   this.getErrorCode = function() {
     return this.errorCode;
@@ -27,6 +35,18 @@ var TentaStore = function() {
 
   this.getCourseHP = function() {
     return this.data.hp;
+  }
+
+  this.getCourseExams = function() {
+    return this.data.exams;
+  }
+
+  this.getCourseExamType = function(index) {
+    return this.data.examtypes[index].name;
+  }
+
+  this.getCourseExamCode = function(index) {
+    return this.data.examtypes[index].code;
   }
 
   this.getLastUpdateString = function() {
@@ -51,75 +71,37 @@ var TentaStore = function() {
     return string;
   }
 
-  this.getCourseGradeData = function() {
+  this.getCourseGradePercentage = function() {
     var grades = {
-      'U': 0,
-      'g3': 0,
-      'g4': 0,
-      'g5': 0,
-      'total': 0
+      'gradeU': 0,
+      'grade3': 0,
+      'grade4': 0,
+      'grade5': 0
     };
 
     for (i = 0; i < this.data.exams.length; i++) {
       var exam = this.data.exams[i];
-      grades.U += exam.grades.U;
-      grades.g3 += exam.grades[3];
-      grades.g4 += exam.grades[4];
-      grades.g5 += exam.grades[5];
-      grades.total += exam.participants;
+
+      if (typeof exam.retry == "undefined" || exam.retry)
+        continue;
+
+      grades.gradeU += exam.grades.gradeU;
+      grades.grade3 += exam.grades.grade3;
+      grades.grade4 += exam.grades.grade4;
+      grades.grade5 += exam.grades.grade5;
     }
 
-    var data = {
-      'U': Math.round(100 * grades.U / grades.total),
-      'g3': Math.round(100 * grades.g3 / grades.total),
-      'g4': Math.round(100 * grades.g4 / grades.total),
-      'g5': Math.round(100 * grades.g5 / grades.total),
-    }
-
-    if (data.U > 50)
-      data.difficulty = 'hard';
-    else if (data.U > 40)
-      data.difficulty = 'moderate';
-    else
-      data.difficulty = 'easy';
-
-    if (data.U + data.g3 + data.g4 + data.g5 < 100)
-      data.U++;
-
-    return data;
-  }
-
-  this.getLastCourseGradeData = function() {
-    var exam = this.data.exams[0];
-    var grades = {
-      'U': exam.grades.U,
-      'g3': exam.grades[3],
-      'g4': exam.grades[4],
-      'g5': exam.grades[5],
-      'total': exam.participants
-    };
-
-    var data = {
-      'U': Math.round(100 * grades.U / grades.total),
-      'g3': Math.round(100 * grades.g3 / grades.total),
-      'g4': Math.round(100 * grades.g4 / grades.total),
-      'g5': Math.round(100 * grades.g5 / grades.total),
-    }
-
-    if (data.U + data.g3 + data.g4 + data.g5 < 100)
-      data.U++;
-
-    return data;
+    return grades;
   }
 
   // Fetch course data from API
-  this.getDataFromAPI = function(courseName) {
+  this.getDataFromAPI = function(courseCode) {
     TentaStore.trigger(APP.STATUS_FETCHING);
 
     $.ajax({
       type: 'POST',
       url: 'api/exams.php',
-      data: {'course': courseName},
+      data: {'course': courseCode},
       dataType: 'JSON',
       success: function(data) {
 
@@ -133,6 +115,9 @@ var TentaStore = function() {
 
         TentaStore.data = data.result;
         TentaStore.timestamp = data.timestamp;
+
+        window.history.pushState({data: TentaStore.data}, 'Tentaresultat för ' + courseCode, courseCode);
+
         TentaStore.trigger(APP.EVENT_NEW_DATA);
       },
       error: function(data) {

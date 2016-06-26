@@ -8,5 +8,5 @@ Linköpings universitet är ej inblandade i detta projekt.
 http://tentan.se/
 
 ## Releaser
-- <b>2 April 2016</b>: <i>v1.0 BETA</i>
-- <b>26 Juni 2016</b>: <i>v2.0</i>
+- <b>2 April 2016</b>: <i>v1.0.0 BETA</i>
+- <b>26 Juni 2016</b>: <i>v2.0.0</i>

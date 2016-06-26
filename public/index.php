@@ -25,8 +25,8 @@ if (strlen($course) > 0) {
     <meta property="og:title" content="<?php echo $title; ?>" />
     <meta property="og:description" content="Tentan.se är en webbtjänst för att visualisera statistik från kurser på Linköpings universitet." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://tentan.se<?php echo $_SERVER['REQUEST_URI']; ?>" />
-    <meta property="og:image" content="http://tentan.se/img/ogimage.png" />
+    <meta property="og:url" content="https://tentan.se<?php echo $_SERVER['REQUEST_URI']; ?>" />
+    <meta property="og:image" content="https://tentan.se/img/ogimage.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="sv_SE" />

@@ -1,9 +1,15 @@
 <?php
 
-$baseURL = dirname($_SERVER['SCRIPT_NAME']) . '/';
+$baseURL = dirname($_SERVER['SCRIPT_NAME']);
+$course = strtoupper(substr($_SERVER['REQUEST_URI'], 1));
+
+if (strlen($course) > 0) {
+  $title = 'Kursstatistik för ' . $course . ' på Linköpings Universitet';
+} else {
+  $title = 'Tentan.se - Tentamensresultat på Linköpings Universitet';
+}
 
 ?>
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,12 +20,15 @@ $baseURL = dirname($_SERVER['SCRIPT_NAME']) . '/';
     <link rel="icon" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8">
-    <title>Tentan.se - Tentamensresultat på Linköpings Universitet</title>
-    <meta name="description" content="Webbtjänst för att visualisera statistik från kurser på Linköpings universitet." />
-    <meta property="og:title" content="Tentamensresultat på Linköpings Universitet" />
-    <meta property="og:description" content="Webbtjänst för att visualisera statistik från kurser på Linköpings universitet." />
+    <title><?php echo $title; ?></title>
+    <meta name="description" content="Tentan.se är en webbtjänst för att visualisera statistik från kurser på Linköpings universitet." />
+    <meta property="og:title" content="<?php echo $title; ?>" />
+    <meta property="og:description" content="Tentan.se är en webbtjänst för att visualisera statistik från kurser på Linköpings universitet." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="img/ogimage.png" />
+    <meta property="og:url" content="http://tentan.se<?php echo $_SERVER['REQUEST_URI']; ?>" />
+    <meta property="og:image" content="http://tentan.se/img/ogimage.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="sv_SE" />
     <meta property="og:site_name" content="Tentan.se" />
     <meta name="theme-color" content="#388e3c" />
@@ -45,7 +54,7 @@ $baseURL = dirname($_SERVER['SCRIPT_NAME']) . '/';
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-76033203-1', 'auto');
       ga('send', 'pageview');
-      
+
     </script>
 
   </body>

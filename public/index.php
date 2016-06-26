@@ -13,9 +13,9 @@ if (strlen($course) > 0) {
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="<?php echo $baseURL; ?>">
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+    <base href="<?php echo $baseURL; ?>/">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
     <link type="text/css" rel="stylesheet" href="css/app.css">
     <link rel="icon" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -39,8 +39,8 @@ if (strlen($course) > 0) {
       <div id="container" class="container"></div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <script>
       window.courseCode = '<?php echo @$_GET['course']; ?>';
       window.baseUrl = '<?php echo $baseURL; ?>';

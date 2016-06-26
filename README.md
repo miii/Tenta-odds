@@ -1,31 +1,12 @@
 # Tentan.se
-Webbtjänst för att se statistik om enskilda kurser på Linköpings universitet.<br>
+Webbtjänst för att se statistik från kurser på Linköpings universitet.<br>
 Finns även möjlighet att lägga till fler universitet i teorin, om datakälla finns.
 
-Byggd av fri vilja med hjälp av [React](https://github.com/facebook/react) och [Flux](https://github.com/facebook/flux).
+Byggd med hjälp av [React](https://github.com/facebook/react) och [Flux](https://github.com/facebook/flux).
+Linköpings universitet är ej inblandat i detta projekt.
 
 http://tentan.se/
 
 ## Releaser
-- <b>2 April 2016</b>: <i>v1.0.0 BETA</i>
-
-## Kända buggar
-- [x] Toast syns bara en gång
-- [ ] Pagescroll funkar inte i Firefox
-- [x] Vissa kurser är ej tillgängliga (tex. TNM040)
-
-## TODO
-##### ASAP:
-- [ ] Skifta färgerna på graferna
-- [ ] Välj examinatonstyp på HP istället för "tentamen"
-- [x] Lägg till Google Analytics
-- [ ] Kommentera koden
-- [ ] Lös laddningsanimationen, SMIL animations är ajabaja
-- [ ] Stöd för Firefox (pin!)
-
-##### I framtiden:
-- [ ] Möjlighet att kunna inkludera omtentor
-- [ ] SEO
-- [ ] Gör en finfin favicon
-- [ ] Möjlighet att välja examinationstyp (ex. projektarbete istället för tentamen)
-- [ ] Möjlighet att kunna välja enskilda tentor till graferna
+- <b>2 April 2016</b>: <i>v1.0 BETA</i>
+- <b>26 Juni 2016</b>: <i>v2.0</i>
